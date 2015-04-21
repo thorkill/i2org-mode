@@ -172,7 +172,7 @@ if __name__ == "__main__":
 
       parser = argparse.ArgumentParser()
       parser.add_argument("-o", "--outfile", default=sys.stdout, help="name of the output file")
-      parser.add_argument("-i", "--infile", default=sys.stdin, help="name of the input file")
+      parser.add_argument("-i", "--infile", required=True, default=sys.stdin, help="name of the input file")
       parser.add_argument("-P", "--pastlimit", default=0, help="limit timeframe into the past (in days)", type=int)
 
       args = parser.parse_args()
