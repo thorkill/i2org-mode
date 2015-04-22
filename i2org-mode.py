@@ -92,13 +92,16 @@ class todo:
             """
             return date.strftime("%Y-%m-%d %H:%M")
 
-      def get_orgmode_line(self, level=2):
+      def get_orgmode_line(self, level=2, astodo=True):
             lines = []
             lines.append("*"*level)
-            if not (self.completed):
-                  lines.append(" TODO "+self.summary)
+            if astodo:
+                  if not (self.completed):
+                        lines.append(" TODO "+self.summary)
+                  else:
+                        lines.append(" DONE "+self.summary)
             else:
-                  lines.append(" DONE "+self.summary)
+                  lines.append(" "+self.summary)
 
             if self.sched or self.due:
                   lines.append("\n   ")
@@ -173,6 +176,7 @@ if __name__ == "__main__":
       parser = argparse.ArgumentParser()
       parser.add_argument("-o", "--outfile", default=sys.stdout, help="name of the output file")
       parser.add_argument("-i", "--infile", required=True, default=sys.stdin, help="name of the input file")
+      parser.add_argument("-T", "--astodo", default=True, help="do not set events as TODO", action="store_true")
       parser.add_argument("-P", "--pastlimit", default=0, help="limit timeframe into the past (in days)", type=int)
 
       args = parser.parse_args()
@@ -187,4 +191,4 @@ if __name__ == "__main__":
 
       fh_w.write(bytes(lcal.get_orgmode_header(), 'UTF-8'))
       for item in lcal.todo_list:
-            fh_w.write(bytes(item.get_orgmode_line(),'UTF-8'))
+            fh_w.write(bytes(item.get_orgmode_line(astodo=args.astodo),'UTF-8'))
